@@ -26,12 +26,12 @@ Rather than passing parameters into a TensorFlow model, pass them into a diction
 ```python
 # Add standard model parameters to a dictionary
 model_param_args = {
-        "epochs": 50,
-        "model": model,
-        "callbacks": [model_checkpoint],
-        "steps_per_epoch": len(x),
-        "loss_func": MeanSquaredError(),
-    }
+    "epochs": 50,
+    "model": model,
+    "callbacks": [model_checkpoint],
+    "steps_per_epoch": len(x),
+    "loss_func": MeanSquaredError(),
+}
 ```  
 Instantiate a ModelParams object using the dictionary:
 ```python

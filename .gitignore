@@ -9,3 +9,8 @@ __pycache__/
 
 # Tensor-Track Output
 output/
+
+# Distribution
+dist/
+tensor_track.egg-info/
+build/
