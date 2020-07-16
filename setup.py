@@ -4,7 +4,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="tensor_track",
+    name="tensor-track",
     version="0.0.1",
     description="The one-stop shop for tracking TensorFlow metrics",
     long_description=long_description,
@@ -13,6 +13,6 @@ setup(
     author="Sam Claflin",
     author_email="samclaflin7@gmail.com",
     license="MIT",
-    packages=["tensor_track"],
+    packages=["tensortrack"],
     zip_safe=False
 )
