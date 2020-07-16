@@ -95,16 +95,9 @@ class Tracker:
         self.track_loss()
         self.track_val_loss()
 
-    def predict_and_evaluate(self, x, y, verbose=1, callbacks=None, batch_size=None, output_format="txt"):
-        try:
-            if x is None or y is None:
-                raise MissingArguments
-
-            self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format)
-            self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
-
-        except MissingArguments:
-            print("Error: Both features and labels must be provided.")
+    def predict_and_evaluate(self, x, y=None, verbose=1, callbacks=None, batch_size=None, output_format="txt"):
+        self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format)
+        self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
 
     def track_params(self):
         self.__gen_output_structure()

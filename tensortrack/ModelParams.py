@@ -64,7 +64,8 @@ class ModelParams:
             raise NoHistory
 
         test_loss, test_acc = self.model.evaluate(
-            x=x, y=y,
+            x=x,
+            y=y,
             verbose=verbose,
             callbacks=callbacks,
             batch_size=batch_size
