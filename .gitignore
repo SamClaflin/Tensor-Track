@@ -1,2 +1,8 @@
 # Virtual Environment
 venv/
+
+# Test file
+test.py
+
+# Pycache
+__pycache__/
