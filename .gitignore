@@ -6,3 +6,6 @@ test.py
 
 # Pycache
 __pycache__/
+
+# Tensor-Track Output
+output/

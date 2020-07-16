@@ -7,7 +7,7 @@ class ModelParams:
     Encapsulates all parameters required by a TensorFlow model in order to easily record them later.
     """
     def __init__(self, epochs, model: Model, lr=1e-3, loss_func=None, steps_per_epoch=None, batch_size=None,
-                 callbacks=None, optimizer=Adam):
+                 callbacks=None, optimizer=Adam, model_name="Model"):
         self.lr = lr
         self.epochs = epochs
         self.steps_per_epoch = steps_per_epoch
@@ -17,6 +17,7 @@ class ModelParams:
         self.optimizer = optimizer(lr=self.lr)
         self.model = model
         self.history = None
+        self.model_name = model_name
 
     # Configure and compile a pre-existing model instance
     def __gen_model(self):
