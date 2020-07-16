@@ -14,3 +14,6 @@ output/
 dist/
 tensor_track.egg-info/
 build/
+
+# TensorFlow models
+*.hdf5
