@@ -35,6 +35,7 @@ class ModelParams:
             y=y,
             batch_size=self.batch_size,
             epochs=self.epochs,
+            steps_per_epoch=self.steps_per_epoch,
             verbose=verbose,
             callbacks=self.callbacks,
             validation_data=validation_data,
