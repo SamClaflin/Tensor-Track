@@ -1,5 +1,6 @@
 from tensorflow.keras import Model
 from tensorflow.keras.optimizers import Adam
+from .TrackExceptions import *
 
 
 class ModelParams:
@@ -43,6 +44,33 @@ class ModelParams:
         )
 
         self.history = history.history
+
+    # Use a trained model to make predictions
+    def make_predictions(self, x, verbose=1, callbacks=None, batch_size=None):
+        if not self.history:
+            raise NoHistory
+
+        predictions = self.model.predict(
+            x=x,
+            verbose=verbose,
+            callbacks=callbacks,
+            batch_size=batch_size
+        )
+
+        return predictions
+
+    def evaluate_model(self, x, y=None, verbose=1, callbacks=None, batch_size=None):
+        if not self.history:
+            raise NoHistory
+
+        test_loss, test_acc = self.model.evaluate(
+            x=x, y=y,
+            verbose=verbose,
+            callbacks=callbacks,
+            batch_size=batch_size
+        )
+
+        return test_loss, test_acc
 
     # Print a summary of the model attribute
     def print_summary(self):
