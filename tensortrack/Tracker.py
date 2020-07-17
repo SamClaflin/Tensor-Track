@@ -177,7 +177,7 @@ class Tracker:
                 for prediction in predictions:
                     count += 1
                     prediction = np.squeeze(prediction)
-                    ax = fig.Axes(fig, [0., 0., 1., 1.])
+                    ax = plt.Axes(fig, [0., 0., 1., 1.])
                     ax.set_axis_off()
                     fig.add_axes(ax)
                     ax.imshow(prediction, cmap=cmap)
