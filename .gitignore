@@ -1,9 +1,6 @@
 # Virtual Environment
 venv/
 
-# Test file
-test.py
-
 # Pycache
 __pycache__/
 
@@ -17,3 +14,6 @@ build/
 
 # TensorFlow models
 *.hdf5
+
+# Deployment script
+*.sh
