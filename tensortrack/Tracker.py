@@ -3,6 +3,8 @@ from .TrackExceptions import *
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import types
+from itertools import tee
 
 
 class Tracker:
@@ -98,8 +100,16 @@ class Tracker:
 
     def predict_and_evaluate(self, x, y=None, verbose=1, callbacks=None, batch_size=None, output_format="txt",
                              multi_class_labels=None):
-        self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format, multi_class_labels)
-        self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
+        # Create duplicate generator if necessary
+        if isinstance(x, types.GeneratorType):
+            x_original, x_duplicate = tee(x)
+            self.make_and_store_predictions(x_original, verbose, callbacks, batch_size, output_format,
+                                            multi_class_labels)
+            self.evaluate_and_track_test(x_duplicate, y, verbose, callbacks, batch_size)
+
+        else:
+            self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format, multi_class_labels)
+            self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
 
     def track_params(self):
         self.__gen_output_structure()
