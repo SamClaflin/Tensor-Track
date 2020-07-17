@@ -17,3 +17,6 @@ build/
 
 # Deployment script
 *.sh
+
+# Generic testing script
+test_script.py

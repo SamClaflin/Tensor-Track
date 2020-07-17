@@ -1,6 +1,7 @@
 from .ModelParams import ModelParams
 from .TrackExceptions import *
 import matplotlib.pyplot as plt
+import numpy as np
 import os
 
 
@@ -95,8 +96,9 @@ class Tracker:
         self.track_loss()
         self.track_val_loss()
 
-    def predict_and_evaluate(self, x, y=None, verbose=1, callbacks=None, batch_size=None, output_format="txt"):
-        self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format)
+    def predict_and_evaluate(self, x, y=None, verbose=1, callbacks=None, batch_size=None, output_format="txt",
+                             multi_class_labels=None):
+        self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format, multi_class_labels)
         self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
 
     def track_params(self):
@@ -134,18 +136,52 @@ class Tracker:
         except NoHistory:
             print("Error: model must first be trained before conducting evaluation.")
 
-    def make_and_store_predictions(self, x, verbose=1, callbacks=None, batch_size=None, output_format="txt"):
+    def make_and_store_predictions(self, x, verbose=1, callbacks=None, batch_size=None, output_format="txt",
+                                   multi_class_labels=None, cmap="gray"):
         self.__gen_output_structure()
+        text_formats = ["txt", "csv"]
+        image_formats = ["png", "jpg", "jpeg"]
+
         try:
             predictions = self.model_params.make_predictions(x, verbose, callbacks, batch_size)
             predictions_dir = os.path.join(self.model_instance_dir, "predict")
             os.mkdir(predictions_dir)
 
-            output_file = os.path.join(predictions_dir, f"predictions.{output_format}")
-            with open(output_file, "w") as f:
+            output_format = output_format.lower()
+
+            if output_format in text_formats:
+                output_file = os.path.join(predictions_dir, f"predictions.{output_format}")
+                with open(output_file, "w") as f:
+                    for prediction in predictions:
+                        if multi_class_labels:
+                            prediction = list(prediction)
+                            predicted_index = prediction.index(max(prediction))
+                            f.write(f"{multi_class_labels[predicted_index]}\n")
+                        else:
+                            f.write(f"{prediction}\n")
+                    f.write("\n")
+
+            elif output_format in image_formats:
+                count = 0
+                fig = plt.figure(frameon=False)
                 for prediction in predictions:
-                    f.write(f"{prediction}\n")
-                f.write("\n")
+                    count += 1
+                    prediction = np.squeeze(prediction)
+                    ax = fig.Axes(fig, [0., 0., 1., 1.])
+                    ax.set_axis_off()
+                    fig.add_axes(ax)
+                    ax.imshow(prediction, cmap=cmap)
+                    fig.savefig(os.path.join(predictions_dir, f"predict_{count}.{output_format}"))
+
+            else:
+                raise InvalidFormat
 
         except NoHistory:
             print("Error: model must first be trained before making predictions.")
+        except InvalidFormat:
+            print(f"Error: file format '{output_format}' is either invalid or not supported.")
+            print("Please select one of the following formats:")
+            print(f"Text data: {text_formats}")
+            print(f"Image data: {image_formats}")
+        except IndexError:
+            print("Index Error: Invalid class labels provided")
