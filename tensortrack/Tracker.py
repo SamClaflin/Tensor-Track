@@ -147,7 +147,7 @@ class Tracker:
             print("Error: model must first be trained before conducting evaluation.")
 
     def make_and_store_predictions(self, x, verbose=1, callbacks=None, batch_size=None, output_format="txt",
-                                   multi_class_labels=None, cmap="gray"):
+                                   multi_class_labels=None, cmap="gray", binary_image=False):
         self.__gen_output_structure()
         text_formats = ["txt", "csv"]
         image_formats = ["png", "jpg", "jpeg"]
@@ -175,6 +175,8 @@ class Tracker:
                 count = 0
                 fig = plt.figure(frameon=False)
                 for prediction in predictions:
+                    if binary_image:
+                        prediction = np.where(prediction >= 0.5, 1, 0)
                     count += 1
                     prediction = np.squeeze(prediction)
                     ax = plt.Axes(fig, [0., 0., 1., 1.])
