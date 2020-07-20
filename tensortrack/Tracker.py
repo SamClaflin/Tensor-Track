@@ -99,16 +99,17 @@ class Tracker:
         self.track_val_loss()
 
     def predict_and_evaluate(self, x, y=None, verbose=1, callbacks=None, batch_size=None, output_format="txt",
-                             multi_class_labels=None):
+                             multi_class_labels=None, cmap="gray", binary_image=False):
         # Create duplicate generator if necessary
         if isinstance(x, types.GeneratorType):
             x_original, x_duplicate = tee(x)
             self.make_and_store_predictions(x_original, verbose, callbacks, batch_size, output_format,
-                                            multi_class_labels)
+                                            multi_class_labels, cmap, binary_image)
             self.evaluate_and_track_test(x_duplicate, y, verbose, callbacks, batch_size)
 
         else:
-            self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format, multi_class_labels)
+            self.make_and_store_predictions(x, verbose, callbacks, batch_size, output_format, multi_class_labels,
+                                            cmap, binary_image)
             self.evaluate_and_track_test(x, y, verbose, callbacks, batch_size)
 
     def track_params(self):
