@@ -8,7 +8,7 @@ class ModelParams:
     Encapsulates all parameters required by a TensorFlow model in order to easily record them later.
     """
     def __init__(self, epochs, model: Model, lr=1e-3, loss_func=None, steps_per_epoch=None, batch_size=None,
-                 callbacks=None, optimizer=Adam, model_name="Model"):
+                 callbacks=None, optimizer=Adam, model_name="Model", pretrained_model=False, notes=None):
         self.lr = lr
         self.epochs = epochs
         self.steps_per_epoch = steps_per_epoch
@@ -19,6 +19,8 @@ class ModelParams:
         self.model = model
         self.history = None
         self.model_name = model_name
+        self.pretrained_model = pretrained_model
+        self.notes = notes
 
     # Configure and compile a pre-existing model instance
     def __gen_model(self):
@@ -30,7 +32,8 @@ class ModelParams:
 
     # Train the model using attributes of the ModelParams instance
     def fit_from_params(self, x, y=None, verbose=1, validation_data=None, validation_steps=None):
-        self.__gen_model()
+        if not self.pretrained_model:
+            self.__gen_model()
         history = self.model.fit(
             x=x,
             y=y,
@@ -44,6 +47,7 @@ class ModelParams:
         )
 
         self.history = history.history
+        print(self.history)
 
     # Use a trained model to make predictions
     def make_predictions(self, x, verbose=1, callbacks=None, batch_size=None):

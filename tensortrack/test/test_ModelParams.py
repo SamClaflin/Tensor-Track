@@ -1,6 +1,6 @@
 from tensortrack.ModelParams import ModelParams
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.losses import MeanSquaredError
 import numpy as np
 
@@ -22,6 +22,7 @@ def init_model_params():
         "model": model,
         "steps_per_epoch": TRAIN_SIZE,
         "loss_func": MeanSquaredError(),
+        "pretrained_model": False
     }
     return ModelParams(**model_param_args)
 
@@ -49,3 +50,18 @@ class TestModelParams:
         loss, acc = model_params_instance.evaluate_model(x_test, y_test)
         assert loss is not None
         assert acc is not None
+
+    def test_load_pretrained_model(self):
+        x, y = init_data()
+        pretrained_model = "model.hdf5"
+        model = load_model(pretrained_model)
+        model_param_args = {
+            "epochs": 10,
+            "model": model,
+            "steps_per_epoch": TRAIN_SIZE,
+            "loss_func": MeanSquaredError(),
+            "pretrained_model": True
+        }
+        model_params_instance = ModelParams(**model_param_args)
+        model_params_instance.fit_from_params(x, y)
+        assert model_params_instance.history is not None

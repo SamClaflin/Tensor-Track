@@ -124,6 +124,8 @@ class Tracker:
             f.write(f"Optimizer: {self.model_params.optimizer}\n")
             f.write(f"Callbacks: {self.model_params.callbacks}\n")
             f.write(f"Batch Size: {self.model_params.batch_size}\n\n")
+            if self.model_params.notes:
+                f.write(f"Additional Notes{self.model_params.notes}\n\n")
 
     def plot_loss(self):
         self.__base_plot("loss", "accuracy", "Train Learning Curve", "train_curve.png", "Train Loss", "Train Accuracy")
