@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="tensor-track",
-    version="0.0.10",
+    version="0.0.11",
     description="The one-stop shop for tracking TensorFlow metrics",
     url="https://github.com/SamClaflin/Tensor-Track",
     author="Sam Claflin",

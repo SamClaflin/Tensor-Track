@@ -47,7 +47,6 @@ class ModelParams:
         )
 
         self.history = history.history
-        print(self.history)
 
     # Use a trained model to make predictions
     def make_predictions(self, x, verbose=1, callbacks=None, batch_size=None):
